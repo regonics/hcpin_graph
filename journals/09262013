@@ -1,0 +1,3 @@
+-Learned how to use 'collections' data type for mongodb/mongoose
+-finished first version parse and loader
+-added handler for case where the only protein listed is the pathway

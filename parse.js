@@ -1,4 +1,16 @@
 var mongoose = require('mongoose');
+var fs = require('fs');
+
+//schema declaration 
+
+var NodeSchema = mongoose.Schema({
+	name : String,
+	connections : [String]
+});
+
+var NodeModel = mongoose.model('Node', NodeSchema);
+
+//Connecting to database
 mongoose.connect('mongodb://localhost/hcpin');
 
 var db = mongoose.connection;
@@ -7,26 +19,61 @@ db.once('open', function () {
 	console.log('connected');
 });
 
-var TestModelSchema = mongoose.Schema({
-	name : String
+//read data file and load database
+fs.readFile('data.txt', 'utf8', function(err, data){
+	if(err)
+		return console.log(err);
+
+	var lines = data.split('\n');
+
+	var testNode;
+	var pathway;
+	var tokens;
+	for(var i = 0; i < lines.length; i++){
+		if(lines[i].charAt(0) == '#'){
+			pathway = lines[i].substring(1);
+			pathway = pathway.trim();
+			testNode = new NodeModel;
+			testNode.name = pathway;
+		}else{
+			tokens = lines[i].split('\t');
+	
+			if(tokens.length > 3 || tokens.length==2){
+				//ignore >2 interactions
+			}else if(tokens.length == 3){
+				if(tokens[0].trim() == pathway){
+					testNode.connections.push(tokens[1].trim());
+				}else{
+					testNode.connections.push(tokens[0].trim());
+				}
+			}
+
+			testNode.save();
+		}	
+	}
+
 });
 
-var TestModel = mongoose.model('Test', TestModelSchema);
 
-var testx = new TestModel({ name: 'hihihhi' });
-console.log(testx.name);
+//construct elements object to be used in cytoscape
+var nodes = [];
+var edges = [];
 
-testx.save(function (err, fluffy) {
-	console.log('saved');
-	if (err)
-		console.log(err);
-});
+setTimeout(function(){
+	NodeModel.find(function (err, query){
+		for(var i = 0; i < query.length; i++){
+			nodes.push({ data: { id: query[i].name, name: query[i].name } });
+			
+			for(var j = 0; j < query[i].connections.length; j++){
+				edges.push({ data: { source: query[i].name, target: query[i].connections[j] } });	
+			}	
+		}
 
-TestModel.find(function (err, kittens) {
-	console.log('find query');
-	console.log(err);
-	console.log(kittens);
+		console.log(nodes);
+		//console.log(edges);
 
-	if (err)
-		console.log(kittens);
-});
+		if (err)
+			console.log(query);
+	});
+}, 1000);
+
