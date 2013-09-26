@@ -60,7 +60,6 @@ fs.readFile('data.txt', 'utf8', function(err, data){
 
 });
 
-
 //construct elements object to be used in cytoscape
 var nodes = [];
 var edges = [];

@@ -1,3 +1,24 @@
+var HCPIN_GRAPH = {
+	test : 'hiihhi'
+}
+
+setTimeout(
+function(){
+$.ajax({
+	url: '/getData',
+	complete: function(data){
+		HCPIN_GRAPH.data = data.responseText;
+		console.log(HCPIN_GRAPH.data);
+		cy.add([
+			{ group: 'nodes', data: { id: 'testNode' } },
+			{ group: 'edges', data: { source: 'testNode', target: 'j' } }	
+		]);
+	}
+});
+}, 6000);
+
+setTimeout(
+function(){
 $('#cy').cytoscape({
   style: cytoscape.stylesheet()
     .selector('node')
@@ -25,8 +46,8 @@ $('#cy').cytoscape({
         'text-opacity': 0
       }),
   
-  elements: {
-    nodes: [
+	elements: {
+   		nodes: [
       { data: { id: 'j', name: 'Jerry' } },
       { data: { id: 'e', name: 'Elaine' } },
       { data: { id: 'k', name: 'Kramer' } },
@@ -44,7 +65,8 @@ $('#cy').cytoscape({
       { data: { source: 'g', target: 'j' } }
     ]
   },
-  
+
+ 
   ready: function(){
     window.cy = this;
    
@@ -67,3 +89,4 @@ $('#cy').cytoscape({
     });
   }
 });
+}, 1000);
