@@ -30,17 +30,23 @@ fs.readFile('data.txt', 'utf8', function(err, data){
 	var pathway;
 	var tokens;
 	for(var i = 0; i < lines.length; i++){
-		if(lines[i].charAt(0) == '#'){
+		if(lines[i].length == 1){
+			i++;   //skip over the '#' line		
+			while(lines[i].charAt(0) != '#'){
+				i++;
+			}
+			i--; //sets i to the line right before '#xxxxxx'
+		}else if(lines[i].charAt(0) == '#'){
 			pathway = lines[i].substring(1);
 			pathway = pathway.trim();
 			testNode = new NodeModel;
 			testNode.name = pathway;
 		}else{
-			tokens = lines[i].split('\t');
+			tokens = lines[i].trim().split('\t');
 	
-			if(tokens.length > 3 || tokens.length==2){
+			if(tokens.length > 2 || tokens.length==1){
 				//ignore >2 interactions
-			}else if(tokens.length == 3){
+			}else if(tokens.length == 2){
 				if(tokens[0].trim() == pathway){
 					testNode.connections.push(tokens[1].trim());
 				}else{
@@ -69,7 +75,7 @@ setTimeout(function(){
 			}	
 		}
 
-		console.log(nodes);
+		console.log(edges);
 		//console.log(edges);
 
 		if (err)
