@@ -1,5 +1,4 @@
 var HCPIN_GRAPH = {
-	test : 'hiihhi'
 }
 
 setTimeout(
@@ -7,15 +6,25 @@ function(){
 $.ajax({
 	url: '/getData',
 	complete: function(data){
-		HCPIN_GRAPH.data = data.responseText;
+		HCPIN_GRAPH.data = $.parseJSON(data.responseText);
+		//console.log(HCPIN_GRAPH.data);
 		console.log(HCPIN_GRAPH.data);
+/*
 		cy.add([
-			{ group: 'nodes', data: { id: 'testNode' } },
-			{ group: 'edges', data: { source: 'testNode', target: 'j' } }	
+			{ group: 'nodes', data: { id: 'testNode', name: 'testNode' }, position: { x: 200, y: 200 } },
+			{ group: 'nodes', data: { id: 'testNode2', name: 'testNode2' }, position: { x: 200, y: 200 } },
+			{ group: 'edges', data: { source: 'e', target: 'g' } },
+			{ group: 'edges', data: { source: 'testNode', target: 'e' } },	
 		]);
+
+		for(var i = 0; i < HCPIN_GRAPH.data.nodes.length; i++)
+			cy.add(HCPIN_GRAPH.data.nodes[i]);
+*/
+		console.log(HCPIN_GRAPH.data.nodes);
+		console.log(HCPIN_GRAPH.data.edges);
 	}
 });
-}, 6000);
+}, 1000);
 
 setTimeout(
 function(){
@@ -47,24 +56,9 @@ $('#cy').cytoscape({
       }),
   
 	elements: {
-   		nodes: [
-      { data: { id: 'j', name: 'Jerry' } },
-      { data: { id: 'e', name: 'Elaine' } },
-      { data: { id: 'k', name: 'Kramer' } },
-      { data: { id: 'g', name: 'George' } }
-    ],
-    edges: [
-      { data: { source: 'j', target: 'e' } },
-      { data: { source: 'j', target: 'k' } },
-      { data: { source: 'j', target: 'g' } },
-      { data: { source: 'e', target: 'j' } },
-      { data: { source: 'e', target: 'k' } },
-      { data: { source: 'k', target: 'j' } },
-      { data: { source: 'k', target: 'e' } },
-      { data: { source: 'k', target: 'g' } },
-      { data: { source: 'g', target: 'j' } }
-    ]
-  },
+   		nodes: HCPIN_GRAPH.data.nodes,
+    		edges: HCPIN_GRAPH.data.edges
+  	},
 
  
   ready: function(){
@@ -73,7 +67,8 @@ $('#cy').cytoscape({
     // giddy up...
     
     cy.elements().unselectify();
-    
+	cy.layout({ name: 'grid', fit: true});  
+ 
     cy.on('tap', 'node', function(e){
       var node = e.cyTarget; 
       var neighborhood = node.neighborhood().add(node);
@@ -89,4 +84,4 @@ $('#cy').cytoscape({
     });
   }
 });
-}, 1000);
+}, 4000);

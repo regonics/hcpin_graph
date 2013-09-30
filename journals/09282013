@@ -1,0 +1,5 @@
+-Dynamically added single node with an edge (needed to assign a position)
+-Able to display all nodes on load w/o edges
+-Discovered problem with data... Not all nodes are represented in the data file with a '#xxxxxx'. Problems occur when trying to create an edge between a node nad another node that doesnt exist. (since its only connected to that one node). Solution is to change the parsing algorithm to create a node instance for every node mentioned in the data file.
+-Loaded all nodes and edges. Terrible performance and layout
+-Did some research. Going to  try sigma and D3 next

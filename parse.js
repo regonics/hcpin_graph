@@ -52,6 +52,7 @@ fs.readFile('data.txt', 'utf8', function(err, data){
 				}else{
 					testNode.connections.push(tokens[0].trim());
 				}
+
 			}
 
 			testNode.save();
