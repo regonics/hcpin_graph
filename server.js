@@ -1,6 +1,9 @@
 var mongoose = require('mongoose');
+var path = require('path');
+var http = require('http');
 var express = require('express');
 var app = express();
+var server = http.createServer(app);
 
 //schema declaration
 var NodeSchema = mongoose.Schema({
@@ -20,10 +23,24 @@ db.once('open', function() {
 
 var NodeModel = mongoose.model('Node', NodeSchema);
 
-app.use(express.static(__dirname));
+app.configure(function(){
+	app.set('port', process.env.PORT || 8000);
+	app.set('views', __dirname + '/views');
+	app.use(express.bodyParser());
+	app.use(express.static(path.join(__dirname, '/public')));
+});
 
-app.get('/', function(req, res){
-	res.sendfile('./index.html');
+app.get('/input', function(req, res){
+	res.sendfile('./input.html');
+});
+
+app.post('/testoutput', function(req, res){
+	console.log(req.body);
+	res.end();
+});
+
+app.get('/output', function(req, res){
+	res.sendfile('./output.html');
 });
 
 app.get('/getData', function(req, res){
@@ -61,4 +78,6 @@ app.get('/getData', function(req, res){
 	});
 });
 
-app.listen(8000);
+server.listen(app.get('port'), function(){
+	console.log("Listening on port " + app.get('port'));
+});

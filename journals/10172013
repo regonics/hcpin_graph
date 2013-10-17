@@ -1,1 +1,21 @@
+-created input page and form
+-created post request page that receives data from input page
+-manually created test sample
 
+goal
+input: take in a list of unipro ids
+output: list of all proteins associated with listed ids
+	generate graph with listed proteins
+
+tasks
+(Input)
+-add input page
+-send data to server with POST
+-parse data into list of ids
+
+(Filter)
+-Generate list of proteins associated with ids given
+
+(Output)
+-Create clean output format for list of ids
+-Generate graph with list
