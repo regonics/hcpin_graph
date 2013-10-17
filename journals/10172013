@@ -1,6 +1,7 @@
 -created input page and form
 -created post request page that receives data from input page
 -manually created test sample
+-created input parser
 
 goal
 input: take in a list of unipro ids

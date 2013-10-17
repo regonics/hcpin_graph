@@ -35,7 +35,8 @@ app.get('/input', function(req, res){
 });
 
 app.post('/testoutput', function(req, res){
-	console.log(req.body);
+	var words = req.body.data.trim().split(/\W+/);
+	console.log(words);
 	res.end();
 });
 
