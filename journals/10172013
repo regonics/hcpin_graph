@@ -2,6 +2,8 @@
 -created post request page that receives data from input page
 -manually created test sample
 -created input parser
+-redesigning database model to better fit task
+-wrote new parser for redesigned database
 
 goal
 input: take in a list of unipro ids

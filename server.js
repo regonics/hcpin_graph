@@ -11,6 +11,10 @@ var NodeSchema = mongoose.Schema({
 	connections: [String]
 });
 
+var EdgeSchema = mongoose.Schema({
+	nodes : [String]
+});
+
 //Connecting to database
 mongoose.connect('mongodb://localhost/hcpin');
 
@@ -22,6 +26,7 @@ db.once('open', function() {
 
 
 var NodeModel = mongoose.model('Node', NodeSchema);
+var EdgeModel = mongoose.model('Edge', EdgeSchema);
 
 app.configure(function(){
 	app.set('port', process.env.PORT || 8000);
@@ -35,8 +40,19 @@ app.get('/input', function(req, res){
 });
 
 app.post('/testoutput', function(req, res){
-	var words = req.body.data.trim().split(/\W+/);
-	console.log(words);
+	var ids = req.body.data.trim().split(/\W+/);
+	var edges = [];
+
+	console.log(ids);
+	for(var i = 0; i < ids.length; i++){
+		console.log("finding..." + ids[i]);	
+		EdgeModel.find({nodes: ids[i]}, function(err, query){
+			for(var i = 0; i < query.length; i++)
+				edges.push(query[i]);
+		});
+	}
+
+	console.log(edges);
 	res.end();
 });
 
