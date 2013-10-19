@@ -11,6 +11,7 @@
 -implemented force directed visual
 -added buttons to show list/graph
 -added hyperlinks to uniprot database
+-set up temporary server
 
 performance fixes
 -more efficient node/edge generator from edge list. (pre process in database)
@@ -21,7 +22,7 @@ output: list of all proteins associated with listed ids
 	generate graph with listed proteins
 
 tasks
-
+-make installation documentation
 
 (Filter)
 -Generate list of proteins associated with ids given
@@ -32,3 +33,4 @@ tasks
 
 questions
 -how to represent 3 way connection? both list and graph
+
