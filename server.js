@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var path = require('path');
+var q = require('q');
 var http = require('http');
 var express = require('express');
 var app = express();
@@ -31,6 +32,7 @@ var EdgeModel = mongoose.model('Edge', EdgeSchema);
 app.configure(function(){
 	app.set('port', process.env.PORT || 8000);
 	app.set('views', __dirname + '/views');
+	app.set('view engine', 'jade');
 	app.use(express.bodyParser());
 	app.use(express.static(path.join(__dirname, '/public')));
 });
@@ -41,19 +43,51 @@ app.get('/input', function(req, res){
 
 app.post('/testoutput', function(req, res){
 	var ids = req.body.data.trim().split(/\W+/);
+	var node_string = [];
+	var nodes = [];
 	var edges = [];
 
 	console.log(ids);
-	for(var i = 0; i < ids.length; i++){
-		console.log("finding..." + ids[i]);	
-		EdgeModel.find({nodes: ids[i]}, function(err, query){
-			for(var i = 0; i < query.length; i++)
-				edges.push(query[i]);
-		});
-	}
 
-	console.log(edges);
-	res.end();
+/*	
+	function queryData(callback){
+		for(var i = 0; i < ids.length; i++){
+			console.log("finding..." + ids[i]);	
+			EdgeModel.find({nodes: ids[i]}, function(err, query){
+				for(var j = 0; j < query.length; j++){
+					edges.push(query[j]);
+				}
+			});
+		}
+
+		callback();
+	}
+*/
+
+	EdgeModel.find({nodes: {$in: ids} }, function(err, query){
+		for(var i = 0; i < query.length; i++){
+			//add edges for every possible pair	
+			for(var p1 = 0; p1 < query[i].nodes.length-1; p1++){
+				for(var p2 = p1+1; p2 < query[i].nodes.length; p2++){
+					edges.push({ data: { source: query[i].nodes[p1], target: query[i].nodes[p2] } });	
+				}
+			}
+
+			//add new nodes
+			for(var x = 0; x < query[i].nodes.length; x++){
+				if(node_string.indexOf(query[i].nodes[x]) == -1)
+					node_string.push(query[i].nodes[x]);	
+			}
+		}
+
+		for(var i = 0; i < node_string.length; i++){
+			nodes.push({ data: { id: node_string[i], name: node_string[i] } });
+		}
+
+		console.log(nodes);
+		console.log(edges);
+		res.render('testoutput.jade', {nodes: JSON.stringify(nodes), edges: JSON.stringify(edges)});
+	});
 });
 
 app.get('/output', function(req, res){

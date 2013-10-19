@@ -4,6 +4,16 @@
 -created input parser
 -redesigning database model to better fit task
 -wrote new parser for redesigned database
+-user can input multiple ids and retrieve associated ids as a list
+-switched to Jade templating system
+-prototype working. (graph displayed)
+-implemented callbacks and promises instead of setTimeouts. (much more efficient)
+-implemented force directed visual
+-added buttons to show list/graph
+-added hyperlinks to uniprot database
+
+performance fixes
+-more efficient node/edge generator from edge list. (pre process in database)
 
 goal
 input: take in a list of unipro ids
@@ -11,10 +21,7 @@ output: list of all proteins associated with listed ids
 	generate graph with listed proteins
 
 tasks
-(Input)
--add input page
--send data to server with POST
--parse data into list of ids
+
 
 (Filter)
 -Generate list of proteins associated with ids given
@@ -22,3 +29,6 @@ tasks
 (Output)
 -Create clean output format for list of ids
 -Generate graph with list
+
+questions
+-how to represent 3 way connection? both list and graph
