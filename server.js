@@ -43,6 +43,7 @@ app.get('/input', function(req, res){
 
 app.post('/testoutput', function(req, res){
 	var ids = req.body.data.trim().split(/\W+/);
+	
 	var node_string = [];
 	var nodes = [];
 	var edges = [];
@@ -65,6 +66,7 @@ app.post('/testoutput', function(req, res){
 */
 
 	EdgeModel.find({nodes: {$in: ids} }, function(err, query){
+		console.log(query);
 		for(var i = 0; i < query.length; i++){
 			//add edges for every possible pair	
 			for(var p1 = 0; p1 < query[i].nodes.length-1; p1++){

@@ -30,6 +30,12 @@ fs.readFile('data.txt', 'utf8', function(err, data){
 	var tokens;
 	for(var i = 0; i < lines.length; i++){
 		tokens = lines[i].trim().split('\t');
+		
+		for(var x = 0; x < tokens.length; x++){
+			if(tokens[x] == ""){
+				tokens.splice(x,1);
+			}
+		}
 	
 		if(tokens.length > 1){
 			testEdge = new EdgeModel;
