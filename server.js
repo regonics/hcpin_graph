@@ -38,7 +38,7 @@ app.configure(function(){
 });
 
 app.get('/input', function(req, res){
-	res.sendfile('./input.html');
+	res.render('input.jade');
 });
 
 app.post('/testoutput', function(req, res){
