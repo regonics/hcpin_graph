@@ -41,7 +41,7 @@ app.get('/input', function(req, res){
 	res.render('input.jade');
 });
 
-app.post('/testoutput', function(req, res){
+app.post('/output', function(req, res){
 	var ids = req.body.data.trim().split(/\W+/);
 	
 	var node_string = [];
@@ -88,7 +88,7 @@ app.post('/testoutput', function(req, res){
 
 		console.log(nodes);
 		console.log(edges);
-		res.render('testoutput.jade', {nodes: JSON.stringify(nodes), edges: JSON.stringify(edges)});
+		res.render('output.jade', {nodes: JSON.stringify(nodes), edges: JSON.stringify(edges)});
 	});
 });
 
