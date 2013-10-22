@@ -92,10 +92,6 @@ app.post('/testoutput', function(req, res){
 	});
 });
 
-app.get('/output', function(req, res){
-	res.sendfile('./output.html');
-});
-
 app.get('/getData', function(req, res){
 	//construct elements object to be used in cytoscape
 	var nodes = [];
