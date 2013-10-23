@@ -10,6 +10,7 @@ cd hcpin_graph
 sudo yum install nodejs
 sudo yum install npm
 sudo yum install mongodb mongodb-server
+npm install
 ```
 
 Loading the database
