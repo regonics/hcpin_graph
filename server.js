@@ -68,10 +68,33 @@ app.post('/output', function(req, res){
 	EdgeModel.find({nodes: {$in: ids} }, function(err, query){
 		console.log(query);
 		for(var i = 0; i < query.length; i++){
-			//add edges for every possible pair	
-			for(var p1 = 0; p1 < query[i].nodes.length-1; p1++){
-				for(var p2 = p1+1; p2 < query[i].nodes.length; p2++){
-					edges.push({ data: { source: query[i].nodes[p1], target: query[i].nodes[p2] } });	
+			//generate data for multinode
+			if(query[i].nodes.length > 2){	
+				//generate central node id
+				var central_nodeID = ""; 
+				for(var p = 0; p < query[i].nodes.length; p++){
+					central_nodeID += query[i].nodes[p];
+					central_nodeID += "-";	
+				}
+				central_nodeID = central_nodeID.substring(0, central_nodeID.length - 1);
+
+				//add central node
+				nodes.push({ data: { id: central_nodeID, name: '*' } });
+
+				//add edges to central node
+				for(var p = 0; p < query[i].nodes.length; p++){
+					edges.push({ data: { source: central_nodeID, target: query[i].nodes[p] } });	
+				}
+			}else{
+				var duplicate_found = false;
+				for(var x = 0; x < edges.length; x++){
+					if(edges[x].data.source == query[i].nodes[1] && edges[x].data.target == query[i].nodes[0])
+						duplicate_found = true;
+				}
+
+
+				if(!duplicate_found){
+					edges.push({ data: { source: query[i].nodes[0], target: query[i].nodes[1] } });	
 				}
 			}
 
@@ -88,7 +111,7 @@ app.post('/output', function(req, res){
 
 		console.log(nodes);
 		console.log(edges);
-		res.render('output.jade', {nodes: JSON.stringify(nodes), edges: JSON.stringify(edges)});
+		res.render('output.jade', {nodes: JSON.stringify(nodes), edges: JSON.stringify(edges), queries: JSON.stringify(ids), raw: JSON.stringify(query)});
 	});
 });
 

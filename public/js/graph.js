@@ -22,7 +22,7 @@ $('#cy').cytoscape({
       		})
  		.selector('edge')
       		.css({
-        	 'target-arrow-shape': 'triangle'
+//        	 'target-arrow-shape': 'triangle'
       		})
     		.selector(':selected')
       		.css({
@@ -35,7 +35,13 @@ $('#cy').cytoscape({
       		.css({
         	 'opacity': 0.25,
         	 'text-opacity': 0
-      		}),
+      		})
+                .selector('.queried')
+                .css({
+		  'background-color': 'red',
+  		  'text-outline-color': 'black',
+                  'color': 'white'
+                }),
 	elements: {
    		nodes: HCPIN_GRAPH.nodes,
     		edges: HCPIN_GRAPH.edges
@@ -56,6 +62,11 @@ $('#cy').cytoscape({
 			circle: false,
 			roots: undefined,
 		};  
+
+		for(var i = 0; i < HCPIN_GRAPH.queries.length; i++){
+			var queryname = "node[name = '" + HCPIN_GRAPH.queries[i] + "']";
+			cy.elements(queryname).addClass('queried');
+		}
 	
 		cy.layout(options); 
    	 	cy.on('tap', 'node', function(e){

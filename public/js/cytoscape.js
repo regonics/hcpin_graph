@@ -11124,7 +11124,7 @@ var cytoscape;
 		
 		if (edge._private.rscratch.noArrowPlacement !== true
 				&& edge._private.rscratch.startX !== undefined) {
-		//	this.drawArrowheads(context, edge, drawOverlayInstead);
+			this.drawArrowheads(context, edge, drawOverlayInstead);
 		}
 
 	}

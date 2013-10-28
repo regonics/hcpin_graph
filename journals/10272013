@@ -1,11 +1,15 @@
+-removed arrows from edges (had to edit library source code)
+-created queried node css class
+-redraw graph to correctly represent multiway connections
+  -create node to represent multiway connections
+  -display: *, id: p1-p2-p3-...
+-color the query nodes
+  -pass query nodes into html
+-Only 1 edge between two nodes
+-Remade table to represent multiway connections
 
 
 ToDo
--Remove directions from connections
-  -Only 1 edge between two nodes
 -Right click node -> uniprot id site
--color the query nodes
 -show options for other graph styles (circle, square, etc)
 -Order the list, left is query, right is connections
--redraw graph to correctly represent multiway connections
-  -create node to represent multiway connections
