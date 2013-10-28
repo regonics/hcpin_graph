@@ -35,7 +35,7 @@ for(var x = 0; x < HCPIN_GRAPH.queries.length; x++){
 }
 
 
-
+$("#uniprotLink").hide();
 $("#idList").hide();
 for(var i = 0; i < HCPIN_GRAPH.raw.length; i++){
 	var listitem = "<li>";
@@ -59,4 +59,8 @@ $('#showListButton').on('click', function(){
 $("#showGraphButton").on('click', function(){
 	$('#idList').hide();
 	$('#cy').show();	
+});
+
+$("#uniprotLink").on('click', function(){
+	window.open(HCPIN_GRAPH.uniprotLink)
 });

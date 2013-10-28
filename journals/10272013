@@ -10,7 +10,8 @@
 -Order the list, left is query, right is connections
   -Pull a query node to front of each list
   -Order by q1, q2, q3, etc
+-fixed duplicate edges bug
+-Added linnk to uniprot id site (from graph)
 
 ToDo
--Right click node -> uniprot id site
 -show options for other graph styles (circle, square, etc)

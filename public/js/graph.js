@@ -74,11 +74,17 @@ $('#cy').cytoscape({
       			var neighborhood = node.neighborhood().add(node);
       			cy.elements().addClass('faded');
       			neighborhood.removeClass('faded');
+
+			
+			HCPIN_GRAPH.uniprotLink = "http://www.uniprot.org/uniprot/" + node.data('name');
+			$("#uniprotLink").text("View " + node.data('name') + " data");
+			$("#uniprotLink").show();
     		});
     
    		 cy.on('tap', function(e){
       			if( e.cyTarget === cy ){
        				cy.elements().removeClass('faded');
+				$("#uniprotLink").hide();
       			}
     		});
   	}
