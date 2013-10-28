@@ -30,5 +30,5 @@ sudo PORT=80 node server.js
 Example Usage
 -------------------
 
-http://ec2-54-211-4-43.compute-1.amazonaws.com/input
+http://ec2-54-211-4-43.compute-1.amazonaws.com/input  
 Input: P11473 P27037
