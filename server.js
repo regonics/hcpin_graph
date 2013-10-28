@@ -109,6 +109,46 @@ app.post('/output', function(req, res){
 			nodes.push({ data: { id: node_string[i], name: node_string[i] } });
 		}
 
+		//pull query node to front of the list. (for better viewing in table format)
+		for(var i = 0; i < query.length; i++){
+			for(var x = 1; x < query[i].nodes.length; x++){
+				if(ids.indexOf(query[i].nodes[x]) != -1){
+					var temp = query[i].nodes[0];
+					query[i].nodes[0] = query[i].nodes[x];
+					query[i].nodes[x] = temp;	
+				}
+			}
+		}
+
+		//group queries together
+		//x is id to be sorted
+		var group_count = 0;
+		for(var x = 0; x < ids.length; x++){
+			//run through queries and pull ids to the top
+			for(var i = group_count; i < query.length; i++){
+				//mismatch found
+				if(query[i].nodes[0] != ids[x]){
+					var swap_index = -1;
+					//find next match
+					for(var y = group_count; y < query.length; y++){
+						if(query[y].nodes[0] == ids[x]){
+							swap_index = y;
+						}	
+					}
+					
+					if(swap_index == -1){
+						break;
+					}else{
+						var temp = query[i].nodes[0];
+						query[i].nodes[0] = query[swap_index].nodes[0];
+						query[swap_index].nodes[0] = temp;
+						group_count++;
+					}
+				}
+				group_count++;
+			}
+		}
+
 		console.log(nodes);
 		console.log(edges);
 		res.render('output.jade', {nodes: JSON.stringify(nodes), edges: JSON.stringify(edges), queries: JSON.stringify(ids), raw: JSON.stringify(query)});
