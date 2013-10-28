@@ -12,6 +12,8 @@
 -added buttons to show list/graph
 -added hyperlinks to uniprot database
 -set up temporary server
+-remade parser to handle garbled data
+
 
 performance fixes
 -more efficient node/edge generator from edge list. (pre process in database)

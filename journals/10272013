@@ -1,0 +1,11 @@
+
+
+ToDo
+-Remove directions from connections
+  -Only 1 edge between two nodes
+-Right click node -> uniprot id site
+-color the query nodes
+-show options for other graph styles (circle, square, etc)
+-Order the list, left is query, right is connections
+-redraw graph to correctly represent multiway connections
+  -create node to represent multiway connections
