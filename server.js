@@ -78,6 +78,16 @@ app.post('/output', function(req, res){
 				}
 				central_nodeID = central_nodeID.substring(0, central_nodeID.length - 1);
 
+				//check if central node already exists
+				var duplicate_found = false;
+				for(var x = 0; x < nodes.length ; x++){
+					if(nodes[x].data.id == central_nodeID)
+						duplicate_found = true;
+				}
+			
+				if(duplicate_found)
+					continue;
+
 				//add central node
 				nodes.push({ data: { id: central_nodeID, name: '*' } });
 
@@ -89,6 +99,8 @@ app.post('/output', function(req, res){
 				var duplicate_found = false;
 				for(var x = 0; x < edges.length; x++){
 					if(edges[x].data.source == query[i].nodes[1] && edges[x].data.target == query[i].nodes[0])
+						duplicate_found = true;
+					if(edges[x].data.source == query[i].nodes[0] && edges[x].data.target == query[i].nodes[1])
 						duplicate_found = true;
 				}
 
@@ -119,7 +131,7 @@ app.post('/output', function(req, res){
 				}
 			}
 		}
-
+/*
 		//group queries together
 		//x is id to be sorted
 		var group_count = 0;
@@ -148,7 +160,7 @@ app.post('/output', function(req, res){
 				group_count++;
 			}
 		}
-
+*/
 		console.log(nodes);
 		console.log(edges);
 		res.render('output.jade', {nodes: JSON.stringify(nodes), edges: JSON.stringify(edges), queries: JSON.stringify(ids), raw: JSON.stringify(query)});
