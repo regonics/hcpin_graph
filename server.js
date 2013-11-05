@@ -4,7 +4,10 @@ var q = require('q');
 var http = require('http');
 var express = require('express');
 var app = express();
+var async = require('async');
 var server = http.createServer(app);
+var ErrorHandlr = require('errorhandlr').engage()
+
 
 //schema declaration
 var NodeSchema = mongoose.Schema({
@@ -35,6 +38,7 @@ app.configure(function(){
 	app.set('view engine', 'jade');
 	app.use(express.bodyParser());
 	app.use(express.static(path.join(__dirname, '/public')));
+	app.use(ErrorHandlr.express());
 });
 
 app.get('/input', function(req, res){
@@ -48,7 +52,7 @@ app.post('/output', function(req, res){
 	var nodes = [];
 	var edges = [];
 
-	console.log(ids);
+	//console.log(ids);
 
 /*	
 	function queryData(callback){
@@ -66,7 +70,7 @@ app.post('/output', function(req, res){
 */
 
 	EdgeModel.find({nodes: {$in: ids} }, function(err, query){
-		console.log(query);
+		//console.log(query);
 		for(var i = 0; i < query.length; i++){
 			//generate data for multinode
 			if(query[i].nodes.length > 2){	
@@ -93,7 +97,7 @@ app.post('/output', function(req, res){
 
 				//add edges to central node
 				for(var p = 0; p < query[i].nodes.length; p++){
-					edges.push({ data: { source: central_nodeID, target: query[i].nodes[p] } });	
+					edges.push({ data: { source: central_nodeID, target: query[i].nodes[p] }, type: 'normal' });	
 				}
 			}else{
 				var duplicate_found = false;
@@ -106,7 +110,7 @@ app.post('/output', function(req, res){
 
 
 				if(!duplicate_found){
-					edges.push({ data: { source: query[i].nodes[0], target: query[i].nodes[1] } });	
+					edges.push({ data: { source: query[i].nodes[0], target: query[i].nodes[1] }, type: 'normal' });	
 				}
 			}
 
@@ -131,6 +135,85 @@ app.post('/output', function(req, res){
 				}
 			}
 		}
+
+		//add hidden edges
+/*
+		var hidden_lock = true;
+		var hidden_launched = [];
+		for(var i = 0; i < nodes.length; i++)
+			hidden_launched.push(false);
+
+		var hidden_data = [];
+		var i = 0;
+		while(i < nodes.length){
+			if(!(nodes[i].data.name == '*' )){
+				//console.log(i);
+				//console.log(hidden_launched);
+				if(hidden_launched[i] == false){	
+						console.log('hi');
+						hidden_launched[i] = true;
+						EdgeModel.find({nodes: {$in: nodes[i].data.id} }, function(hidden_err, hidden_query){
+							console.log('queried');
+		
+							if(hidden_query != null){
+									console.log('not null query found');
+									for(var x = 0; x < hidden_query.length; x++){
+										//only add hidden edge if its not a multi node	
+										if(hidden_query[x].nodes.length == 2){
+											var search_node;
+											if(nodes[i] == hidden_query[x].nodes[0]){
+												search_node = hidden_query[x].nodes[1];
+											}else{
+												search_node = hidden_query[x].nodes[0];
+											}
+
+											for(var y = 0; y < nodes.length; y++){
+												//skip if its the same node we're performing the check with
+												if(i != y){
+													//hidden edge found
+													if(nodes[y] == search_node){
+														edges.push({ data: { source: search_node, target: nodes[y] }, type: 'hidden' });	
+													}	
+												}
+											}	
+										}
+									}
+							}
+				
+							hidden_data.push(hidden_query);			
+							i++;
+						});
+				}
+			}else{
+				hidden_launched[i] = true;
+				i++;
+			}	
+		}
+*/
+		console.log(nodes);
+		var counter = 0;
+		var async_hidden_tasks = [];
+		for(var i = 0; i < nodes.length; i++){
+				var name = 'query ' + i;
+				console.log(name);
+				async_hidden_tasks.push(function(callback){
+					EdgeModel.find({nodes: {$in: [nodes[counter].data.id] }}, function(hidden_err, hidden_query){
+						console.log('query ' + counter + ': ' + hidden_query);
+						console.log(counter);
+						counter++;	
+						callback(null);
+					});
+				});
+		}
+
+		async.series(async_hidden_tasks, function(err, results){
+				console.log('ran');	
+				console.log(nodes);
+				console.log(edges);
+				res.render('output.jade', {nodes: JSON.stringify(nodes), edges: JSON.stringify(edges), queries: JSON.stringify(ids), raw: JSON.stringify(query)});
+		});
+
+
 /*
 		//group queries together
 		//x is id to be sorted
@@ -160,10 +243,22 @@ app.post('/output', function(req, res){
 				group_count++;
 			}
 		}
+
+		function check_lock(callback){
+			console.log('still locked');
+			console.log(hidden_lock);
+			if(hidden_lock){
+				console.log('setting lock again');	
+				setTimeout(check_lock, 500);
+			}else{
+				console.log(nodes);
+				console.log(edges);
+				res.render('output.jade', {nodes: JSON.stringify(nodes), edges: JSON.stringify(edges), queries: JSON.stringify(ids), raw: JSON.stringify(query)});
+			}
+		}
+
+		setTimeout(check_lock, 1000);
 */
-		console.log(nodes);
-		console.log(edges);
-		res.render('output.jade', {nodes: JSON.stringify(nodes), edges: JSON.stringify(edges), queries: JSON.stringify(ids), raw: JSON.stringify(query)});
 	});
 });
 

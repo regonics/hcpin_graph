@@ -46,3 +46,12 @@ Q04771  Q8TB52
 Q8TB52  Q13485
 Q8TB52  Q15797
 Q9HCE7  Q8TB52
+
+
+testing hidden edges...
+input:
+P36896
+Q96GG9
+
+output:
+Q13485-Q15796 is connected

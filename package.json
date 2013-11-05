@@ -19,6 +19,7 @@
     "express": "3.x",
     "jquery": "*",
     "q": "*",
-    "mongoose": "*"
+    "mongoose": "*",
+    "errorhandlr": "0.0.4"
   }
 }
