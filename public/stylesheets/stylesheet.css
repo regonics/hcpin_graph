@@ -2,10 +2,26 @@ body {
   font: 14px helvetica neue, helvetica, arial, sans-serif;
 }
 
+#hcpin_container{
+	width: 100%;
+	display:table;
+}
+
 #cy {
   height: 600px;
-  width: 100%;
-  position: relative;
-  left: 0;
-  top: 0;
+  width: 70%;
+  border: 1px solid black; 
+  display: table-cell;
+}
+
+#uniprot_data{
+  width: 30%;
+  height: 600px;
+  border: 1px solid black;
+  display: table-cell;
+}
+
+#uniprot_html{
+	width: 90%;
+	height: 500px;
 }

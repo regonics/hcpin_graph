@@ -110,10 +110,13 @@ $('#cy').cytoscape({
       			cy.elements().addClass('faded');
       			neighborhood.removeClass('faded');
 
-			
-			HCPIN_GRAPH.uniprotLink = "http://www.uniprot.org/uniprot/" + node.data('name');
-			$("#uniprotLink").text("View " + node.data('name') + " data");
-			$("#uniprotLink").show();
+				HCPIN_GRAPH.uniprotLink = "http://www.uniprot.org/uniprot/" + node.data('name');
+				$("#uniprotLink").text("View " + node.data('name') + " data");
+				$("#uniprotLink").show();
+
+
+				$('#uniprot_data_id').text("ID: " + node.data('name'));
+				$('#uniprot_html').attr('src', HCPIN_GRAPH.uniprotLink);
     		});
     
    		 cy.on('tap', function(e){

@@ -13,7 +13,11 @@ html
 			| Graph
 		button(id="uniprotLink")
 			| View (protein) data
-		div(id="cy")
+		div(id="hcpin_container")	
+			div(id="cy")
+			div(id="uniprot_data")
+				h1(id="uniprot_data_id") ID: n/a
+				iframe(id="uniprot_html", src="http://www.uniprot.org/uniprot/P37023")
 		ul(id="idList")
 		script(type="text/javascript").
 			var HCPIN_GRAPH = {};
