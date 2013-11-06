@@ -49,22 +49,38 @@ $('#cy').cytoscape({
                 }),
 	elements: {
    		nodes: HCPIN_GRAPH.nodes,
-    		edges: HCPIN_GRAPH.edges
+    	edges: HCPIN_GRAPH.edges
   	},
 	layout: { 
-		name: "arbor" 
+		name: "arbor",
+		edgeLength: function(data){
+			var multinode;
+
+			if(data.source.indexOf('-') != -1)
+				multinode = true;
+
+			if(data.target.indexOf('-') != -1)
+				multinode = true;
+
+			if(multinode){
+				console.log(data);
+				return 1;
+			}else{
+				return 10;
+			}
+		}, 
 	},
 	ready: function(){
    		window.cy = this;
     		cy.elements().unselectify();
 		options = { 	
-			name: 'breadthfirst', 
 			fit: true,
 			ready: undefined,
 			stop: undefined,
 			directed: true,	
 			padding: 30,
 			circle: false,
+			edgeLength: 10,
 			roots: undefined,
 		};  
 
