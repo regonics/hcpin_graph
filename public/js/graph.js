@@ -23,6 +23,7 @@ $('#cy').cytoscape({
  		.selector('edge')
       		.css({
 //        	 'target-arrow-shape': 'triangle'
+				'line-color': 'blue'
       		})
     		.selector(':selected')
       		.css({
@@ -31,6 +32,10 @@ $('#cy').cytoscape({
       		 'target-arrow-color': 'black',
     		 'source-arrow-color': 'black'
       		})
+		.selector('.hidden_edge')
+			.css({
+				'line-color': 'red',
+			})
    		.selector('.faded')
       		.css({
         	 'opacity': 0.25,
@@ -66,6 +71,11 @@ $('#cy').cytoscape({
 		for(var i = 0; i < HCPIN_GRAPH.queries.length; i++){
 			var queryname = "node[name = '" + HCPIN_GRAPH.queries[i] + "']";
 			cy.elements(queryname).addClass('queried');
+		}
+
+		for(var i = HCPIN_GRAPH.edges.length-1; HCPIN_GRAPH.edges[i].type == 'hidden'; i--){
+			var queryname = "edge[source = '" + HCPIN_GRAPH.edges[i].data.source + "'][target = '" + HCPIN_GRAPH.edges[i].data.target + "']";
+			cy.elements(queryname).addClass('hidden_edge');
 		}
 	
 		cy.layout(options); 
