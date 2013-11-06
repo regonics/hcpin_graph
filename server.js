@@ -192,22 +192,51 @@ app.post('/output', function(req, res){
 */
 		console.log(nodes);
 		var counter = 0;
+		var hidden_start = edges.length;
 		var async_hidden_tasks = [];
 		for(var i = 0; i < nodes.length; i++){
-				var name = 'query ' + i;
-				console.log(name);
-				async_hidden_tasks.push(function(callback){
-					EdgeModel.find({nodes: {$in: [nodes[counter].data.id] }}, function(hidden_err, hidden_query){
-						console.log('query ' + counter + ': ' + hidden_query);
-						console.log(counter);
-						counter++;	
-						callback(null);
-					});
+			async_hidden_tasks.push(function(callback){
+				EdgeModel.find({nodes: {$in: [nodes[counter].data.id] }}, function(hidden_err, hidden_query){
+					if(hidden_query != null){
+						for(var x = 0; x < hidden_query.length; x++){
+							if(hidden_query[x].nodes.length == 2){
+								var search_node;	
+								if(nodes[counter] == hidden_query[x].nodes[0]){
+									search_node = hidden_query[x].nodes[1];	
+								}else{
+									search_node = hidden_query[x].nodes[0];
+								}
+
+								for(var y = 0; y < nodes.length; y++){
+									if(counter != y){
+										console.log('running search on ' + search_node + ' and ' + nodes[y].data.id);
+									
+										if(nodes[y].data.id == search_node){
+											var duplicate_found = false;
+
+											for(var j = 0; j < edges.length; j++){
+													if(edges[j].data.source == search_node && edges[j].data.target == nodes[counter].data.id)
+														duplicate_found = true;
+													if(edges[j].data.source == nodes[counter].data.id && edges[j].data.target == search_node)
+														duplicate_found = true;
+											}
+
+											if(!duplicate_found)
+												edges.push({ data: { source: search_node, target: nodes[counter].data.id }, type: 'hidden' });
+										}
+									}
+								}
+							}
+						}
+					}			
+
+					counter++;	
+					callback(null);
 				});
+			});
 		}
 
 		async.series(async_hidden_tasks, function(err, results){
-				console.log('ran');	
 				console.log(nodes);
 				console.log(edges);
 				res.render('output.jade', {nodes: JSON.stringify(nodes), edges: JSON.stringify(edges), queries: JSON.stringify(ids), raw: JSON.stringify(query)});
