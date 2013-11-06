@@ -23,18 +23,25 @@ $('#cy').cytoscape({
  		.selector('edge')
       		.css({
 //        	 'target-arrow-shape': 'triangle'
-				'line-color': 'blue'
+				'line-color': 'blue',
+				'opacity': .7
       		})
     		.selector(':selected')
       		.css({
    		 'background-color': 'black',
        		 'line-color': 'black',
       		 'target-arrow-color': 'black',
-    		 'source-arrow-color': 'black'
+    		 'source-arrow-color': 'black',
+			 'opacity': .9
       		})
 		.selector('.hidden_edge')
 			.css({
 				'line-color': 'red',
+				'opacity': .5
+			})
+		.selector('.multinode')
+			.css({
+				'shape': 'triangle',
 			})
    		.selector('.faded')
       		.css({
@@ -93,6 +100,8 @@ $('#cy').cytoscape({
 			var queryname = "edge[source = '" + HCPIN_GRAPH.edges[i].data.source + "'][target = '" + HCPIN_GRAPH.edges[i].data.target + "']";
 			cy.elements(queryname).addClass('hidden_edge');
 		}
+
+		cy.elements("node[name ='*']").addClass('multinode');
 	
 		cy.layout(options); 
    	 	cy.on('tap', 'node', function(e){
