@@ -52,23 +52,6 @@ app.post('/output', function(req, res){
 	var nodes = [];
 	var edges = [];
 
-	//console.log(ids);
-
-/*	
-	function queryData(callback){
-		for(var i = 0; i < ids.length; i++){
-			console.log("finding..." + ids[i]);	
-			EdgeModel.find({nodes: ids[i]}, function(err, query){
-				for(var j = 0; j < query.length; j++){
-					edges.push(query[j]);
-				}
-			});
-		}
-
-		callback();
-	}
-*/
-
 	EdgeModel.find({nodes: {$in: ids} }, function(err, query){
 		//console.log(query);
 		for(var i = 0; i < query.length; i++){
@@ -136,60 +119,6 @@ app.post('/output', function(req, res){
 			}
 		}
 
-		//add hidden edges
-/*
-		var hidden_lock = true;
-		var hidden_launched = [];
-		for(var i = 0; i < nodes.length; i++)
-			hidden_launched.push(false);
-
-		var hidden_data = [];
-		var i = 0;
-		while(i < nodes.length){
-			if(!(nodes[i].data.name == '*' )){
-				//console.log(i);
-				//console.log(hidden_launched);
-				if(hidden_launched[i] == false){	
-						console.log('hi');
-						hidden_launched[i] = true;
-						EdgeModel.find({nodes: {$in: nodes[i].data.id} }, function(hidden_err, hidden_query){
-							console.log('queried');
-		
-							if(hidden_query != null){
-									console.log('not null query found');
-									for(var x = 0; x < hidden_query.length; x++){
-										//only add hidden edge if its not a multi node	
-										if(hidden_query[x].nodes.length == 2){
-											var search_node;
-											if(nodes[i] == hidden_query[x].nodes[0]){
-												search_node = hidden_query[x].nodes[1];
-											}else{
-												search_node = hidden_query[x].nodes[0];
-											}
-
-											for(var y = 0; y < nodes.length; y++){
-												//skip if its the same node we're performing the check with
-												if(i != y){
-													//hidden edge found
-													if(nodes[y] == search_node){
-														edges.push({ data: { source: search_node, target: nodes[y] }, type: 'hidden' });	
-													}	
-												}
-											}	
-										}
-									}
-							}
-				
-							hidden_data.push(hidden_query);			
-							i++;
-						});
-				}
-			}else{
-				hidden_launched[i] = true;
-				i++;
-			}	
-		}
-*/
 		console.log(nodes);
 		var counter = 0;
 		var hidden_start = edges.length;
@@ -242,88 +171,12 @@ app.post('/output', function(req, res){
 				res.render('output.jade', {nodes: JSON.stringify(nodes), edges: JSON.stringify(edges), queries: JSON.stringify(ids), raw: JSON.stringify(query)});
 		});
 
-
-/*
-		//group queries together
-		//x is id to be sorted
-		var group_count = 0;
-		for(var x = 0; x < ids.length; x++){
-			//run through queries and pull ids to the top
-			for(var i = group_count; i < query.length; i++){
-				//mismatch found
-				if(query[i].nodes[0] != ids[x]){
-					var swap_index = -1;
-					//find next match
-					for(var y = group_count; y < query.length; y++){
-						if(query[y].nodes[0] == ids[x]){
-							swap_index = y;
-						}	
-					}
-					
-					if(swap_index == -1){
-						break;
-					}else{
-						var temp = query[i].nodes[0];
-						query[i].nodes[0] = query[swap_index].nodes[0];
-						query[swap_index].nodes[0] = temp;
-						group_count++;
-					}
-				}
-				group_count++;
-			}
-		}
-
-		function check_lock(callback){
-			console.log('still locked');
-			console.log(hidden_lock);
-			if(hidden_lock){
-				console.log('setting lock again');	
-				setTimeout(check_lock, 500);
-			}else{
-				console.log(nodes);
-				console.log(edges);
-				res.render('output.jade', {nodes: JSON.stringify(nodes), edges: JSON.stringify(edges), queries: JSON.stringify(ids), raw: JSON.stringify(query)});
-			}
-		}
-
-		setTimeout(check_lock, 1000);
-*/
 	});
 });
 
-app.get('/getData', function(req, res){
-	//construct elements object to be used in cytoscape
-	var nodes = [];
-	var edges = [];
-	var collection = [];
 
-	console.log('getting data');
+app.get('/getKeggImage', function(req, res){
 
-	NodeModel.find(function (err, query){
-		for(var i = 0; i < query.length; i++){
-			nodes.push({ data: { id: query[i].name, name: query[i].name } });
-			//nodes.push({ group: 'nodes', data: { id: query[i].name, name: query[i].name }, position: { x: 200, y: 200 } });
-		
-			for(var j = 0; j < query[i].connections.length; j++){
-				edges.push({ data: { source: query[i].name, target: query[i].connections[j] } });	
-				//edges.push({ group: 'edges', data: { source: query[i].name, target: query[i].connections[j] } });	
-			}	
-		}
-
-		for(var i = 0; i < edges.length; i++){
-			var exists = false;
-			for(var j = 0; j < nodes.length; j++){
-				if(edges[i].data.target === nodes[j].data.id)
-					exists = true;
-			}
-
-			if(!exists)
-				nodes.push({ data: { id: edges[i].data.target, name: edges[i].data.target } });
-		}
-	
-		console.log(nodes.length);	
-		res.json({ nodes: nodes, edges: edges});
-	});
 });
 
 server.listen(app.get('port'), function(){
