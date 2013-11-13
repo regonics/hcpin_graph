@@ -20,6 +20,7 @@
     "jquery": "*",
     "q": "*",
     "mongoose": "*",
-    "errorhandlr": "0.0.4"
-  }
+    "errorhandlr": "0.0.4",
+    "async": "0.2.9"
+ }
 }
