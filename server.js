@@ -8,6 +8,8 @@ var async = require('async');
 var server = http.createServer(app);
 var ErrorHandlr = require('errorhandlr').engage()
 
+//my exports
+var kegg = require('./extract_kegg.js');
 
 //schema declaration
 var NodeSchema = mongoose.Schema({
@@ -174,9 +176,25 @@ app.post('/output', function(req, res){
 	});
 });
 
-
 app.get('/getKeggImage', function(req, res){
+	var return_urls = [];
+	var finished = { 'status': false };
 
+	kegg.getKeggImgs(req.query.uniprot_id, return_urls, finished);
+
+	async.until(
+		function(){
+			return finished.status;
+		},
+	
+		function(callback){
+			setTimeout(callback, 200);
+		},
+
+		function(err){
+			res.json({'img_urls': return_urls});
+		}
+	);
 });
 
 server.listen(app.get('port'), function(){
