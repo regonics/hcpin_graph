@@ -111,18 +111,21 @@ $('#cy').cytoscape({
       			neighborhood.removeClass('faded');
 
 				HCPIN_GRAPH.uniprotLink = "http://www.uniprot.org/uniprot/" + node.data('name');
+				HCPIN_GRAPH.uniprot_id = node.data('name');
 				$("#uniprotLink").text("View " + node.data('name') + " data");
 				$("#uniprotLink").show();
 
-
 				$('#uniprot_data_id').text("ID: " + node.data('name'));
 				$('#uniprot_html').attr('src', HCPIN_GRAPH.uniprotLink);
+
+				$('#showKeggImagesButton').show();
     		});
     
    		 cy.on('tap', function(e){
       			if( e.cyTarget === cy ){
        				cy.elements().removeClass('faded');
 				$("#uniprotLink").hide();
+				$("#showKeggImagesButton").hide();
       			}
     		});
   	}

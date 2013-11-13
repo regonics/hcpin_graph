@@ -1,3 +1,9 @@
+-Completed kegg image retriever
+
+
 TODO:
--Clearly layout plans for apoptosis merge
+-make it pretty
+-extend kegg image retriever to add pathway group name
+-add condition for no kegg images
+-add parser to maintain personal db of images
 -Refactor server.js
