@@ -11,6 +11,8 @@ html
 			| List
 		button(id="showGraphButton")
 			| Graph
+		button(id="showKeggImagesButton")
+			| View Kegg Pathway images
 		button(id="uniprotLink")
 			| View (protein) data
 		div(id="hcpin_container")	
@@ -19,6 +21,7 @@ html
 				h1(id="uniprot_data_id") ID: n/a
 				iframe(id="uniprot_html", src="http://www.uniprot.org/uniprot/P37023")
 		ul(id="idList")
+		div(id="kegg_container")
 		script(type="text/javascript").
 			var HCPIN_GRAPH = {};
 			HCPIN_GRAPH.nodes = !{nodes};
