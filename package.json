@@ -20,6 +20,7 @@
     "jquery": "*",
     "q": "*",
     "mongoose": "*",
+    "request": "2.27.0",
     "errorhandlr": "0.0.4"
   }
 }
