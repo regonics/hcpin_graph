@@ -34,8 +34,8 @@ for(var x = 0; x < HCPIN_GRAPH.queries.length; x++){
 	}
 }
 
-$("#uniprotLink").hide();
-$("#showKeggImagesButton").hide();
+$('#uniprotLink').hide();
+$('#showKeggImagesButton').hide();
 $("#idList").hide();
 $("#kegg_container").hide();
 

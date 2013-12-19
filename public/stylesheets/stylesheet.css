@@ -2,6 +2,16 @@ body {
   font: 14px helvetica neue, helvetica, arial, sans-serif;
 }
 
+.button_bar{
+	display: table;
+	margin: 0 auto;
+	margin-bottom: 10px;
+}
+
+button{
+	margin: 5px;
+}
+
 #inputinfo{
 	display: block;
 	width: 400px;
@@ -29,6 +39,10 @@ body {
 	margin-bottom: 10px;
 }
 
+#idList{
+	margin-left: calc(50% - 150px);
+}
+
 #hcpin_container{
 	width: 100%;
 	display:table;
@@ -46,7 +60,7 @@ body {
   height: 600px;
   border: 1px solid black;
   display: table-cell;
-}
+};
 
 #uniprot_html{
 	width: 90%;
