@@ -4,10 +4,14 @@ html
 		meta(charset=utf-8)
 		title UNIPROT ID Input
 		link(rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css")
+		link(rel="stylesheet" type="text/css" href="stylesheets/bootstrap.min.css")
 		script(src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js")
 	body
-		form(name="input" action="output" method="POST")
-			textarea(name="data" rows=10 cols=30)
-			br
-			input(type="submit" value="Submit")
+		h1(id="inputheader" align="center") HCPIN Input
+		form(id="inputform" name="input" action="output" method="POST")
+			textarea(id="inputbox" name="data" rows=10 cols=30)
+			input(id="inputsubmit" type="submit" value="Generate Graph")
 			script(src="js/kegg.js")
+		h4(id="inputinfo" align="center") Input is separated by whitespace (spaces, tabs, newlines). <br><br>Example... "P11473 P27037"
+	footer
+		script(type='text/javascript', src='js/bootstrap.min.js')

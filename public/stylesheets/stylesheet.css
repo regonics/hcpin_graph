@@ -2,6 +2,33 @@ body {
   font: 14px helvetica neue, helvetica, arial, sans-serif;
 }
 
+#inputinfo{
+	display: block;
+	width: 400px;
+	margin: 0 auto;	
+
+	color: grey;
+}
+
+#inputform{
+	width: 50%;
+	margin: 0 auto;
+}
+
+#inputbox{
+	display: block;
+	width: 400px;
+	margin: 0 auto;
+}
+
+#inputsubmit{
+	display: block;
+	width: 400px;
+	margin: 0 auto;
+	margin-top: 5px;
+	margin-bottom: 10px;
+}
+
 #hcpin_container{
 	width: 100%;
 	display:table;
