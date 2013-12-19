@@ -43,9 +43,12 @@ app.configure(function(){
 	app.use(ErrorHandlr.express());
 });
 
-app.get('/input', function(req, res){
+function inputPage(req, res){
 	res.render('input.jade');
-});
+}
+
+app.get('/', inputPage);
+app.get('/input', inputPage);
 
 app.post('/output', function(req, res){
 	var ids = req.body.data.trim().split(/\W+/);
